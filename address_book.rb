@@ -23,6 +23,17 @@ class Person
     self.shoes = shoes
   end
 
+#factory
+  def self.makePerson(type,stack)
+    if type == "Trainee"
+      person = Trainee.new(stack)
+    elsif type == "Instructor"
+      person = Instructor.new(stack)
+    end
+  end
+
+
+
   # Displays the input form to the user
   #
   def draw
@@ -60,6 +71,26 @@ class Person
       @last_name_field = shoes.edit_line
     end
 
+    shoes.flow do
+      shoes.caption "Email"
+      @last_name_field = shoes.edit_line
+    end
+
+    shoes.flow do
+      shoes.caption "Github"
+      @last_name_field = shoes.edit_line
+    end
+
+    shoes.flow do
+      shoes.caption "Twitter"
+      @last_name_field = shoes.edit_line
+    end
+
+    shoes.flow do
+      shoes.caption "Fun Fact"
+      @last_name_field = shoes.edit_line
+    end
+
     # TODO 4. Add fields for the user to fill in, but only if they are
     # relevant to the given user type.
   end
@@ -69,6 +100,11 @@ class Person
   def save_values
     self.first_name = @first_name_field.text.strip.chomp
     self.last_name = @last_name_field.text.strip.chomp
+    self.email = @first_name_field.text.strip.chomp
+    self.github = @last_name_field.text.strip.chomp
+    self.twitter = @first_name_field.text.strip.chomp
+    self.fun_fact = @last_name_field.text.strip.chomp
+
 
     # TODO: 2. Finish the implementation to set the other fields.
   end
@@ -104,6 +140,9 @@ Shoes.app title: "Ruby Address Book", width: 520 do
       caption "Type"
       list_box :items => %w(Trainee Instructor) do |selected|
         debug selected.text
+
+        @person = Person.makePerson(selected.text, self)
+        @person.draw_questions
 
         # TODO 3. Create a Trainee or an Instructor using a Person factory method
         # and store the result in @person. Show the fields for the user to fill in
