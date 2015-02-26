@@ -1,0 +1,57 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    after_do (0.3.1)
+    coderay (1.1.0)
+    ffi (1.9.3-java)
+    furoshiki (0.3.0)
+      plist
+      rubyzip (>= 1.0.0)
+      warbler (~> 1.4.4)
+    jdbc-sqlite3 (3.8.7)
+    jruby-jars (1.7.18)
+    jruby-rack (1.1.18)
+    method_source (0.8.2)
+    nokogiri (1.6.4.1-java)
+    plist (3.1.0)
+    pry (0.10.1-java)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+      spoon (~> 0.0)
+    rake (10.1.0)
+    rubyzip (1.1.6)
+    shoes (4.0.0.pre3)
+      shoes-core (= 4.0.0.pre3)
+      shoes-manual (~> 4.0.0, >= 4.0.0)
+      shoes-swt (= 4.0.0.pre3)
+    shoes-core (4.0.0.pre3)
+    shoes-highlighter (1.0.0)
+    shoes-manual (4.0.0)
+      nokogiri (~> 1.6.4.1, >= 1.6.4.1)
+      shoes-highlighter (~> 1.0, >= 1.0.0)
+    shoes-package (4.0.0.pre3)
+      furoshiki (~> 0.3.0)
+      shoes-core (= 4.0.0.pre3)
+    shoes-swt (4.0.0.pre3)
+      after_do (~> 0.3)
+      shoes-core (= 4.0.0.pre3)
+      shoes-package (= 4.0.0.pre3)
+      swt (~> 4.4)
+    slop (3.6.0)
+    spoon (0.0.4)
+      ffi
+    swt (4.4)
+    warbler (1.4.4)
+      jruby-jars (>= 1.5.6, < 2.0)
+      jruby-rack (>= 1.0.0)
+      rake (>= 0.9.6)
+      rubyzip (>= 0.9, < 1.2)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  jdbc-sqlite3
+  pry
+  shoes
