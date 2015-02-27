@@ -8,7 +8,6 @@ GEM
       plist
       rubyzip (>= 1.0.0)
       warbler (~> 1.4.4)
-    jdbc-sqlite3 (3.8.7)
     jruby-jars (1.7.18)
     jruby-rack (1.1.18)
     method_source (0.8.2)
@@ -52,6 +51,5 @@ PLATFORMS
   java
 
 DEPENDENCIES
-  jdbc-sqlite3
   pry
   shoes

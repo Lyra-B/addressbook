@@ -51,9 +51,8 @@ class Person
         $address_book << self
 
         # TODO: 6. Open a address_book.yml YAML file and write it out to disc
+        YAML::load( File.open('address_book.yml', 'a+') )
         shoes.app.debug self.to_yaml
-
-        # Person.insert
 
         shoes.app.alert 'Saved'
       end
@@ -176,12 +175,15 @@ Shoes.app title: "Ruby Address Book", width: 520 do
   ('A'..'Z').each do |letter|
     flow width: 40 do
       button letter do
-        # binding.pry
+         # binding.pry
         $address_book.each do |n|
           if n.last_name.start_with?(letter)
+            # alert(n)
+            # binding.pry
             puts "#{n.first_name} #{n.last_name}"
           end
         end
+
         # if
         # alert(letter) # if @last_name.start_with?(letter)
         # @form
