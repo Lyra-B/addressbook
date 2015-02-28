@@ -21,6 +21,7 @@ class Person
 
   def initialize(shoes)
     @shoes = shoes
+    # binding.pry
     @my_addressbook = File.open('address_book.yml')
     YAML.load_documents(@my_addressbook) do |entry|
       $address_book << entry
@@ -28,10 +29,16 @@ class Person
     end
   end
 
-  def self.search_by_letter(letter)
+  def self.search_by_letter(l)
+    # binding.pry
     $address_book.each do |n|
-      if n.last_name.start_with?(letter)
-        puts "#{n.first_name} #{n.last_name}"
+      if n.last_name.start_with?(l)
+        # binding.pry
+        # self.display_names(n.first_name,n.last_name)
+        # puts "#{n.first_name} #{n.last_name}"
+        n
+        # binding.pry
+        # "#{n.first_name} #{n.last_name}"
       end
     end
   end
@@ -46,6 +53,21 @@ class Person
       person = Employee.new(stack)
     end
   end
+
+  # def display_names(first,last)
+  #   shoes.app.flow do
+  #     shoes.app.caption "#{first} #{last}"
+  #   end
+  # end
+
+
+  # def draw_names(method)
+  #   # binding.pry
+  #   shoes.clear
+  #   shoes.append do
+  #     method
+  #   end
+  # end
 
   # Displays the input form to the user
   #
@@ -187,23 +209,26 @@ Shoes.app title: "Ruby Address Book", width: 520 do
   ('A'..'Z').each do |letter|
     flow width: 40 do
       button letter do
-         # binding.pry
-        Person.search_by_letter(letter)
-        # binding.pry
-
-        # if
-        # alert(letter) # if @last_name.start_with?(letter)
-        # @form
-        # $address_book.select do |n,key,value|
-        #   binding.pry
-        #   if n[key].start_with?(letter)
-        #     # binding.pry
-        #     shoes.app.alert "#{n[value]}"
-        #   end
-        # end
-      end
+        stack margin: 20 do
+          flow do
+            @people = Person.search_by_letter(letter)
+            # "Hello world!"
+            @people.each do |person|
+              caption "#{person.first_name} #{person.last_name}"
+        #       n.draw_names(n.display_names(n.first_name, n.last_name))
+        #   # "#{n.first_name} #{n.last_name}"
+            end
+        #     @people = Person.search_by_letter(letter)
+        # # name = Person.search_by_letter(letter)
+        #     @people.each do |n|
+        #       n.draw_names(n.display_names(n.first_name, n.last_name))
+        #   # "#{n.first_name} #{n.last_name}"
+            # end
+          end
+        end
         # TODO 5. Show each of the Person objects in the address_book where the
         # last name matches.
+      end
     end
   end
   # end
