@@ -21,6 +21,19 @@ class Person
 
   def initialize(shoes)
     @shoes = shoes
+    @my_addressbook = File.open('address_book.yml')
+    YAML.load_documents(@my_addressbook) do |entry|
+      $address_book << entry
+      # binding.pry
+    end
+  end
+
+  def self.search_by_letter(letter)
+    $address_book.each do |n|
+      if n.last_name.start_with?(letter)
+        puts "#{n.first_name} #{n.last_name}"
+      end
+    end
   end
 
   def self.makePerson(type,stack)
@@ -50,15 +63,8 @@ class Person
         # Append ourselves to our address_book Array
 
         # TODO: 6. Open a address_book.yml YAML file and write it out to disc
-        # File.open('address_book.yml', 'a') {|f| f.write(self.to_yaml)}
-        my_contacts = File.open('address_book.yml')
-        # shoes.app.debug self.to_yaml
-        YAML.load_documents(my_contacts) do |c|
-            $address_book << c
-        end
-        binding.pry
-        $address_book.uniq
-
+        File.open('address_book.yml', 'a') {|f| f.write(self.to_yaml)}
+        shoes.app.debug self.to_yaml
         shoes.app.alert 'Saved'
       end
     end
@@ -182,13 +188,8 @@ Shoes.app title: "Ruby Address Book", width: 520 do
     flow width: 40 do
       button letter do
          # binding.pry
-        $address_book.each do |n|
-          if n.last_name.start_with?(letter)
-            # alert(n)
-            # binding.pry
-            puts "#{n.first_name} #{n.last_name}"
-          end
-        end
+        Person.search_by_letter(letter)
+        # binding.pry
 
         # if
         # alert(letter) # if @last_name.start_with?(letter)
