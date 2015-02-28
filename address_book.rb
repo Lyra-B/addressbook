@@ -1,6 +1,11 @@
 require 'rubygems'
 require 'yaml'
 require 'pry'
+require_relative 'person.rb'
+require_relative 'instructor.rb'
+require_relative 'trainee.rb'
+require_relative 'employee.rb'
+
 
 # We're using an Array as our data store. This the ONE AND ONLY TIME we'll use
 # a global variable!
@@ -9,199 +14,6 @@ $address_book = []
 # A Person represents an individual that we want to store contact information
 # for, the superclass of Trainee and Instructor
 
-class Person
-  attr_accessor :shoes
-  attr_accessor :first_name
-  attr_accessor :last_name
-  attr_accessor :email
-  attr_accessor :github
-  attr_accessor :twitter
-  attr_accessor :fun_fact
-  # TODO 1. Add more!
-
-  def initialize(shoes)
-    @shoes = shoes
-    # binding.pry
-    @my_addressbook = File.open('address_book.yml')
-    YAML.load_documents(@my_addressbook) do |entry|
-      $address_book << entry
-      # binding.pry
-    end
-  end
-
-  def self.search_by_letter(l)
-    # binding.pry
-    $address_book.each do |n|
-      if n.last_name.start_with?(l)
-        # binding.pry
-        # self.display_names(n.first_name,n.last_name)
-        # puts "#{n.first_name} #{n.last_name}"
-        n
-        # binding.pry
-        # "#{n.first_name} #{n.last_name}"
-      end
-    end
-  end
-
-  def self.makePerson(type,stack)
-    case type
-    when "Trainee"
-      person = Trainee.new(stack)
-    when "Instructor"
-      person = Instructor.new(stack)
-    when "Employee"
-      person = Employee.new(stack)
-    end
-  end
-
-  # def display_names(first,last)
-  #   shoes.app.flow do
-  #     shoes.app.caption "#{first} #{last}"
-  #   end
-  # end
-
-
-  # def draw_names(method)
-  #   # binding.pry
-  #   shoes.clear
-  #   shoes.append do
-  #     method
-  #   end
-  # end
-
-  # Displays the input form to the user
-  #
-  def draw
-    shoes.clear
-    shoes.append do
-
-      # Show the questions on the screen
-      draw_questions
-
-      shoes.app.button "Save" do
-        # Set the values from the boxes into the Object
-        save_values
-
-        # Append ourselves to our address_book Array
-
-        # TODO: 6. Open a address_book.yml YAML file and write it out to disc
-        File.open('address_book.yml', 'a') {|f| f.write(self.to_yaml)}
-        shoes.app.debug self.to_yaml
-        shoes.app.alert 'Saved'
-      end
-    end
-  end
-
-  # Renders some labels and textboxes to prompt the user for input
-
-  def draw_questions
-    shoes.app.flow do
-      shoes.app.caption "First name"
-      @first_name_field = shoes.app.edit_line
-    end
-
-    shoes.app.flow do
-      shoes.app.caption "Last name"
-      @last_name_field = shoes.app.edit_line
-    end
-
-    shoes.app.flow do
-      shoes.app.caption "Email"
-      @email_field = shoes.app.edit_line
-    end
-
-    shoes.app.flow do
-      shoes.app.caption "Github"
-      @github_field = shoes.app.edit_line
-    end
-
-    shoes.app.flow do
-      shoes.app.caption "Twitter"
-      @twitter_field = shoes.app.edit_line
-    end
-
-    shoes.app.flow do
-      shoes.app.caption "Fun Fact"
-      @fun_fact_field = shoes.app.edit_line
-    end
-
-    # TODO 4. Add fields for the user to fill in, but only if they are
-    # relevant to the given user type.
-  end
-
-  # Set the persons's name to the contents of the text box
-
-  def save_values
-    self.first_name = @first_name_field.text.strip.chomp
-    self.last_name = @last_name_field.text.strip.chomp
-    self.email = @email_field.text.strip.chomp
-    self.github = @github_field.text.strip.chomp
-    self.twitter = @twitter_field.text.strip.chomp
-    self.fun_fact = @fun_fact_field.text.strip.chomp
-
-  #   # TODO: 2. Finish the implementation to set the other fields.
-  end
-
-
-
-  def to_yaml_properties
-    #Add the fields that should be saved to the YAML file
-   %w(@first_name @last_name @email @github @twitter @fun_fact @preferred_text_editor @teaching_experience @work_experience)
-  end
-end
-
-
-class Trainee < Person
-  attr_accessor :preferred_text_editor
-
-  def draw_questions
-    super
-    shoes.app.flow do
-      shoes.app.caption "Preferred Text Editor"
-      @preferred_text_editor_field = shoes.app.edit_line
-    end
-  end
-
-  def save_values
-    super
-    @preferred_text_editor = @preferred_text_editor_field.text.strip.chomp
-  end
-end
-
-class Instructor < Person
-  attr_accessor :teaching_experience
-
-  def draw_questions
-    super
-    shoes.app.flow do
-      shoes.app.caption "Teaching Experience"
-      @teaching_experience_field = shoes.app.edit_line
-    end
-  end
-
-  def save_values
-    super
-    @teaching_experience = @teaching_experience_field.text.strip.chomp
-  end
-end
-
-class Employee < Person
-  attr_accessor :work_experience
-
-  def draw_questions
-    super
-    shoes.app.flow do
-      shoes.app.caption "Work Experience"
-      @work_experience_field = shoes.app.edit_line
-    end
-  end
-
-  def save_values
-    super
-    @work_experience = @work_experience_field.text.strip.chomp
-  end
-end
-
 Shoes.app title: "Ruby Address Book", width: 520 do
   background rgb(240, 250, 208)
   # The row of buttons to lookup Person objects in the address_book
@@ -209,21 +21,13 @@ Shoes.app title: "Ruby Address Book", width: 520 do
   ('A'..'Z').each do |letter|
     flow width: 40 do
       button letter do
+        @people = Person.search_by_letter(letter)
+        # binding.pry
         stack margin: 20 do
           flow do
-            @people = Person.search_by_letter(letter)
-            # "Hello world!"
             @people.each do |person|
-              caption "#{person.first_name} #{person.last_name}"
-        #       n.draw_names(n.display_names(n.first_name, n.last_name))
-        #   # "#{n.first_name} #{n.last_name}"
+              caption "#{person.first_name} #{person.last_name} "
             end
-        #     @people = Person.search_by_letter(letter)
-        # # name = Person.search_by_letter(letter)
-        #     @people.each do |n|
-        #       n.draw_names(n.display_names(n.first_name, n.last_name))
-        #   # "#{n.first_name} #{n.last_name}"
-            # end
           end
         end
         # TODO 5. Show each of the Person objects in the address_book where the
@@ -231,7 +35,6 @@ Shoes.app title: "Ruby Address Book", width: 520 do
       end
     end
   end
-  # end
 
   stack margin: 20 do
     flow do
