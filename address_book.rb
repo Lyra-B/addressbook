@@ -51,7 +51,7 @@ class Person
         $address_book << self
 
         # TODO: 6. Open a address_book.yml YAML file and write it out to disc
-        YAML::load( File.open('address_book.yml', 'a+') )
+        File.open('address_book.yml', 'a') {|f| f.write(self.to_yaml)}
         shoes.app.debug self.to_yaml
 
         shoes.app.alert 'Saved'
