@@ -48,11 +48,16 @@ class Person
         save_values
 
         # Append ourselves to our address_book Array
-        $address_book << self
 
         # TODO: 6. Open a address_book.yml YAML file and write it out to disc
-        File.open('address_book.yml', 'a') {|f| f.write(self.to_yaml)}
-        shoes.app.debug self.to_yaml
+        # File.open('address_book.yml', 'a') {|f| f.write(self.to_yaml)}
+        my_contacts = File.open('address_book.yml')
+        # shoes.app.debug self.to_yaml
+        YAML.load_documents(my_contacts) do |c|
+            $address_book << c
+        end
+        binding.pry
+        $address_book.uniq
 
         shoes.app.alert 'Saved'
       end
@@ -172,6 +177,7 @@ end
 Shoes.app title: "Ruby Address Book", width: 520 do
   background rgb(240, 250, 208)
   # The row of buttons to lookup Person objects in the address_book
+  # list = YAML.load_file('address_book.yml').to_a
   ('A'..'Z').each do |letter|
     flow width: 40 do
       button letter do
