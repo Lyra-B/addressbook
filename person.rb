@@ -55,9 +55,18 @@ class Person
         # Append ourselves to our address_book Array
 
         # TODO: 6. Open a address_book.yml YAML file and write it out to disc
-        File.open('address_book.yml', 'a') {|f| f.write(self.to_yaml)}
-        shoes.app.debug self.to_yaml
-        shoes.app.alert 'Saved'
+        no_duplicate = true
+        $address_book.each do |c|
+           no_duplicate = false if c.email == self.email
+        end
+
+        if no_duplicate
+          File.open('address_book.yml', 'a') { |f| f.write(self.to_yaml) }
+          shoes.app.debug self.to_yaml
+          shoes.app.alert 'Saved'
+        else
+          shoes.app.alert 'Contact already exists!'
+        end
       end
     end
   end
